@@ -1,5 +1,4 @@
 import os
-import sys
 import logging
 import argparse
 import subprocess
@@ -9,14 +8,16 @@ from glob import iglob
 parser = argparse.ArgumentParser(description='Searches all virtualenvs on a drive and checks for specific packages.')
 parser.add_argument('-l', '--log_level', type=int, default=1, choices=range(0, 4), metavar="[0-3]",
                     help='Level of messages to log (0 = error, 1 = warning, 2 = info, 3 = debug) (warning default).')
-parser.add_argument('-d', '--drive', action='append', default=[], metavar="[A-Z]",
+parser.add_argument('-d', '--drive', nargs='*', default=[], metavar="[A-Z]",
                     help='Drive(s) to check. Repeat argument to check multiple drives. Defaults to just C:')
-parser.add_argument('-p', '--package', action='append', default=[],
+parser.add_argument('-p', '--package', nargs='*', default=[],
                     help='Additional package names to check. Repeat argument to check multiple. Prefix ! to negate.')
 parser.add_argument('-pl', '--package_list', type=str, default='',
                     help='File containing nothing but a list of package names to check. (bar comments and empty lines)')
 parser.add_argument('-pm', '--python_marker', type=str, default='Scripts/python.exe',
                     help='Contents of a folder identifying it as a virtualenv.')
+parser.add_argument('-la', '--list_all', action='store_true', default=False,
+                    help='Instead of listing matches, will cause the script to list *all* installed packages.')
 args = parser.parse_args()
 
 # setup logging
@@ -106,6 +107,8 @@ for check_drive in check_drives:
 
             for p in packages:
                 logger.info('Package {p} in {v}'.format(p=p, v=ve_path))
+                if args.list_all:
+                    print('{v}: {p}'.format(p=p, v=ve_path))
             found = [p for p in packages if p.split('==')[0] in check_packages]
             if len(found) > 0:
                 for p in found:
@@ -114,13 +117,17 @@ for check_drive in check_drives:
             else:
                 logger.info('None of check_packages found in {v}'.format(v=ve_path))
 
-if count_found > 0:
-    print('{n} packages matching the criteria were found.'.format(n=count_found))
-else:
-    print('No packages matching the criteria found.')
-if count_unable > 0:
-    print('In {n} locations, "pip freeze" could not be successfully executed.'.format(n=count_unable))
-else:
-    print('All found virtual environments checked.')
+# only print these messages when not generating a full listing
+if not args.list_all:
+    if count_found > 0:
+        print('{n} packages matching the criteria were found.'.format(n=count_found))
+    else:
+        print('No packages matching the criteria found.')
+    if count_unable > 0:
+        print('In {n} locations, "pip freeze" could not be successfully executed.'.format(n=count_unable))
+    else:
+        print('All found virtual environments checked.')
+
+# exit code 2 unless none of the packages was found
 if count_found + count_unable > 0:
     exit(2)

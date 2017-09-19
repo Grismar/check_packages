@@ -1,13 +1,13 @@
 # Check packages
  
-This Python script will try to find all virtual environments and checks if any package from a list of specified packages is installed.  
+This Python script will try to find all virtual environments on specified drives and checks if any package from a list of specified packages is installed into any of them. Alternatively, it will list all installed packaged in all virtual environments.
 
 ## Installation
 
 No installation required, just grab the repo:
 
 ```
-git clone http://username@gitlab/jaap.vandervelde/data-collection.git
+git clone http://gitlab/jaap.vandervelde/check_packages.git
 ```
 
 ## Execution
@@ -29,7 +29,7 @@ python check_packages.py --help
 For example:
   
 ```
-python check_packages.py -pl package_list.txt -p !urllib -p shady -l 3 -d C -d D
+python check_packages.py -pl package_list.txt -p !urllib shady -l 3 -d C D
 ```
 
 Ideally, the script will run without errors (with no command line options provided):

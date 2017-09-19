@@ -31,3 +31,10 @@ For example:
 ```
 python check_packages.py -pl package_list.txt -p !urllib -p shady -l 3 -d C -d D
 ```
+
+Ideally, the script will run without errors (with no command line options provided):
+
+```
+No packages matching the criteria found.
+All found virtual environments checked.
+```

@@ -7,7 +7,7 @@ This Python script will try to find all virtual environments and checks if any p
 No installation required, just grab the repo:
 
 ```
-git clone http://username@gitlab/jaap.vandervelde/data-collection.git
+git clone https://github.com/Grismar/check_packages.git
 ```
 
 ## Execution

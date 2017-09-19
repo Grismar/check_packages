@@ -1,4 +1,5 @@
 import os
+import sys
 import logging
 import argparse
 import subprocess
@@ -26,6 +27,11 @@ ch = logging.StreamHandler()
 ch.setLevel(log_levels[args.log_level])
 logger.addHandler(ch)
 logger.debug('log_level : {log_level}'.format(log_level=args.log_level))
+
+# check OS
+if os.name != 'nt':
+    logger.error('This script was written specifically for Windows. Feel free to modify to your need.')
+    exit(1)
 
 # list of drives to check, check C: by default
 check_drives = args.drive

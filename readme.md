@@ -38,3 +38,9 @@ Ideally, the script will run without errors (with no command line options provid
 No packages matching the criteria found.
 All found virtual environments checked.
 ```
+
+To list all installed packages in all virtual environments (on C:):
+
+```
+python check_packages.py --list_all --drive C
+```
